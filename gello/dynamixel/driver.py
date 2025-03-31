@@ -92,7 +92,7 @@ class FakeDynamixelDriver(DynamixelDriverProtocol):
 
 class DynamixelDriver(DynamixelDriverProtocol):
     def __init__(
-        self, ids: Sequence[int], port: str = "/dev/ttyUSB0", baudrate: int = 57600
+        self, ids: Sequence[int], port: str = "/dev/ttyUSB1", baudrate: int = 57600
     ):
         """Initialize the DynamixelDriver class.
 
@@ -156,6 +156,8 @@ class DynamixelDriver(DynamixelDriverProtocol):
         for dxl_id, angle in zip(self._ids, joint_angles):
             # Convert the angle to the appropriate value for the servo
             position_value = int(angle * 2048 / np.pi)
+            # if position_value < 0 or position_value > 4095:
+            #     raise ValueError(f"Position value {position_value} out of range (0-4095)")
 
             # Allocate goal position value into byte array
             param_goal_position = [
@@ -248,7 +250,8 @@ class DynamixelDriver(DynamixelDriverProtocol):
 
 def main():
     # Set the port, baudrate, and servo IDs
-    ids = [1]
+    ids = [0,1,2,3,4,5,6,7]
+
 
     # Create a DynamixelDriver instance
     try:
@@ -260,11 +263,13 @@ def main():
     driver.set_torque_mode(True)
     driver.set_torque_mode(False)
 
-    # Test reading the joint angles
+    # # Test reading the joint angles
+    # driver.set_joints( [1] )
     try:
         while True:
             joint_angles = driver.get_joints()
             print(f"Joint angles for IDs {ids}: {joint_angles}")
+            # driver.set_joints([joint_angles[0] - 0.2])
             # print(f"Joint angles for IDs {ids[1]}: {joint_angles[1]}")
     except KeyboardInterrupt:
         driver.close()

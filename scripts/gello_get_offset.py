@@ -42,7 +42,8 @@ class Args:
 
 
 def get_config(args: Args) -> None:
-    joint_ids = list(range(1, args.num_joints + 1))
+    # joint_ids = list(range(1, args.num_joints + 1))
+    joint_ids= [0,1, 2, 3, 4, 5, 6, 7]
     driver = DynamixelDriver(joint_ids, port=args.port, baudrate=57600)
 
     # assume that the joint state shouold be args.start_joints
