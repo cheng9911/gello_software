@@ -248,23 +248,24 @@ class DynamixelDriver(DynamixelDriverProtocol):
 
 def main():
     # Set the port, baudrate, and servo IDs
-    ids = [1]
+    ids = [0,1,2,3,4,5,6,7]
 
     # Create a DynamixelDriver instance
     try:
-        driver = DynamixelDriver(ids)
+        driver = DynamixelDriver(ids, port="/dev/ttyUSB0")
     except FileNotFoundError:
-        driver = DynamixelDriver(ids, port="/dev/cu.usbserial-FT7WBMUB")
+        driver = DynamixelDriver(ids, port="/dev/ttyUSB0")
 
     # Test setting torque mode
-    driver.set_torque_mode(True)
-    driver.set_torque_mode(False)
+    # driver.set_torque_mode(True)
+    # driver.set_torque_mode(False)
 
     # Test reading the joint angles
     try:
         while True:
             joint_angles = driver.get_joints()
             print(f"Joint angles for IDs {ids}: {joint_angles}")
+            time.sleep(0.1)
             # print(f"Joint angles for IDs {ids[1]}: {joint_angles[1]}")
     except KeyboardInterrupt:
         driver.close()

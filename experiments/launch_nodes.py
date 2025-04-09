@@ -66,7 +66,7 @@ def launch_robot_server(args: Args):
         elif args.robot == "panda":
             from gello.robots.panda import PandaRobot
 
-            robot = PandaRobot(robot_ip=args.robot_ip)
+            robot = PandaRobot(robot_ip="localhost")
         elif args.robot == "bimanual_ur":
             from gello.robots.ur import URRobot
 

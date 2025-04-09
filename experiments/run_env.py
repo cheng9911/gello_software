@@ -119,12 +119,16 @@ def main(args):
                 reset_joints = np.deg2rad(
                     [0, -90, 90, -90, -90, 0, 0]
                 )  # Change this to your own reset joints
+                print("Using default reset joints")
             else:
                 reset_joints = args.start_joints
             agent = GelloAgent(port=gello_port, start_joints=args.start_joints)
             curr_joints = env.get_obs()["joint_positions"]
+            print("curr_joints", curr_joints)
+            print("reset_joints", reset_joints)
             if reset_joints.shape == curr_joints.shape:
                 max_delta = (np.abs(curr_joints - reset_joints)).max()
+                
                 steps = min(int(max_delta / 0.01), 100)
 
                 for jnt in np.linspace(curr_joints, reset_joints, steps):
@@ -152,6 +156,10 @@ def main(args):
     joints = obs["joint_positions"]
 
     abs_deltas = np.abs(start_pos - joints)
+    abs_deltas[-1]= 0.0  # gripper joint
+    print("Start pos: ", start_pos)
+    print("Joints: ", joints)
+    print("Deltas: ", abs_deltas)
     id_max_joint_delta = np.argmax(abs_deltas)
 
     max_joint_delta = 0.8

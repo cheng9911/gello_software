@@ -5,13 +5,13 @@ import numpy as np
 
 from gello.robots.robot import Robot
 
-MAX_OPEN = 0.09
+MAX_OPEN = 0.0889
 
 
 class PandaRobot(Robot):
     """A class representing a UR robot."""
 
-    def __init__(self, robot_ip: str = "100.97.47.74"):
+    def __init__(self, robot_ip: str = "127.0.0.1"):
         from polymetis import GripperInterface, RobotInterface
 
         self.robot = RobotInterface(
@@ -22,7 +22,7 @@ class PandaRobot(Robot):
         )
         self.robot.go_home()
         self.robot.start_joint_impedance()
-        self.gripper.goto(width=MAX_OPEN, speed=255, force=255)
+        self.gripper.goto(width=MAX_OPEN, speed=255, force=25)
         time.sleep(1)
 
     def num_dofs(self) -> int:
@@ -53,7 +53,7 @@ class PandaRobot(Robot):
         import torch
 
         self.robot.update_desired_joint_positions(torch.tensor(joint_state[:-1]))
-        self.gripper.goto(width=(MAX_OPEN * (1 - joint_state[-1])), speed=1, force=1)
+        self.gripper.goto(width=(MAX_OPEN * (1 - joint_state[-1])), speed=200, force=2)
 
     def get_observations(self) -> Dict[str, np.ndarray]:
         joints = self.get_joint_state()
@@ -70,6 +70,7 @@ class PandaRobot(Robot):
 def main():
     robot = PandaRobot()
     current_joints = robot.get_joint_state()
+    print("Current joints:", current_joints)
     # move a small delta 0.1 rad
     move_joints = current_joints + 0.05
     # make last joint (gripper) closed
@@ -78,7 +79,7 @@ def main():
     m = 0.09
     robot.gripper.goto(1 * m, speed=255, force=255)
     time.sleep(1)
-    robot.gripper.goto(1.05 * m, speed=255, force=255)
+    robot.gripper.goto(0 * m, speed=255, force=255)
     time.sleep(1)
     robot.gripper.goto(1.1 * m, speed=255, force=255)
     time.sleep(1)

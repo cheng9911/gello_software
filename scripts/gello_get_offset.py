@@ -42,8 +42,9 @@ class Args:
 
 
 def get_config(args: Args) -> None:
-    joint_ids = list(range(1, args.num_joints + 1))
+    joint_ids = list(range(0, args.num_joints ))
     driver = DynamixelDriver(joint_ids, port=args.port, baudrate=57600)
+    print("joint_ids",joint_ids)
 
     # assume that the joint state shouold be args.start_joints
     # find the offset, which is a multiple of np.pi/2 that minimizes the error between the current joint state and args.start_joints
@@ -57,16 +58,18 @@ def get_config(args: Args) -> None:
 
     for _ in range(10):
         driver.get_joints()  # warmup
-
+    step = 0.1 * np.pi / 180  # 0.1° 转换为弧度
+    num_steps = int((16 * np.pi) / step) + 1  # 计算步数
     for _ in range(1):
         best_offsets = []
         curr_joints = driver.get_joints()
         for i in range(args.num_robot_joints):
             best_offset = 0
             best_error = 1e6
-            for offset in np.linspace(
-                -8 * np.pi, 8 * np.pi, 8 * 4 + 1
-            ):  # intervals of pi/2
+            # for offset in np.linspace(
+            #     -8 * np.pi, 8 * np.pi, 8 * 4 + 1
+            # ):  # intervals of pi/2
+            for offset in np.linspace(-8 * np.pi, 8 * np.pi, num_steps):  # 0.1° 步长
                 error = get_error(offset, i, curr_joints)
                 if error < best_error:
                     best_error = error

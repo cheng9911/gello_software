@@ -61,20 +61,39 @@ PORT_CONFIG_MAP: Dict[str, DynamixelRobotConfig] = {
     # ),
     # panda
     # "/dev/cu.usbserial-FT3M9NVB": DynamixelRobotConfig(
-    "/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FT3M9NVB-if00-port0": DynamixelRobotConfig(
-        joint_ids=(1, 2, 3, 4, 5, 6, 7),
+    "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0": DynamixelRobotConfig(
+        joint_ids=(0,1, 2, 3, 4, 5, 6),
         joint_offsets=(
-            3 * np.pi / 2,
-            2 * np.pi / 2,
-            1 * np.pi / 2,
-            4 * np.pi / 2,
-            -2 * np.pi / 2 + 2 * np.pi,
-            3 * np.pi / 2,
-            4 * np.pi / 2,
+           
+        #    1.876, 5.913, 6.185, 3.918, 4.787, 4.993, 7.262
+        # 1.709, 5.971, 6.440, 3.826, 4.545, 4.978, 7.205
+        # 1.983, 5.917, 6.388, 3.924, 4.679, 4.997, 7.634
+        1.780, 5.890, 6.400, 3.992, 4.627, 5.205, 7.245
+        # 1.417, 5.932, 6.325, 3.913, 4.677, 5.163, 7.001
+        # 1.752, 6.002, 6.391, 3.768, 4.681, 4.904, 7.110
+
+        #    1.913, 5.917, 6.175, 3.930, 4.665, 5.138, 7.083
+        # 1.930, 5.993, 6.156, 3.819, 4.735, 5.096, 0.860
+        #   1*np.pi/2, 4*np.pi/2, 4*np.pi/2, 2*np.pi/2, 3*np.pi/2, 3*np.pi/2, 5*np.pi/2 
         ),
         joint_signs=(1, -1, 1, 1, 1, -1, 1),
-        gripper_config=(8, 195, 152),
+        gripper_config=(7, 201, 159),
     ),
+    
+    # "/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FT3M9NVB-if00-port0": DynamixelRobotConfig(
+    #     joint_ids=(1, 2, 3, 4, 5, 6, 7),
+    #     joint_offsets=(
+    #         3 * np.pi / 2,
+    #         2 * np.pi / 2,
+    #         1 * np.pi / 2,
+    #         4 * np.pi / 2,
+    #         -2 * np.pi / 2 + 2 * np.pi,
+    #         3 * np.pi / 2,
+    #         4 * np.pi / 2,
+    #     ),
+    #     joint_signs=(1, -1, 1, 1, 1, -1, 1),
+    #     gripper_config=(8, 195, 152),
+    # ),
     # Left UR
     "/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FT7WBEIA-if00-port0": DynamixelRobotConfig(
         joint_ids=(1, 2, 3, 4, 5, 6),
